@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fiscal Year 2013 Map</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src='//api.tiles.mapbox.com/mapbox.js/v1.2.0/mapbox.js'></script>
+  <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+  <script type="text/javascript" src="/assets/js/typahead.min.js"></script>
+  <script type="text/javascript" src="/assets/js/leaflet-pip.min.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42506028-2', 'breadforthecity.org');
+    ga('send', 'pageview');
+  </script>
+
+  <link rel='stylesheet' href='//api.tiles.mapbox.com/mapbox.js/v1.2.0/mapbox.css'/>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+</head>
+<body>
+
+
+
+  <div id="help">
+    <p class="instructions"> Click on or search for neighborhood to view details.<br/> Click it again to release.<br/>
+      Move around with keyboard arrows or mouse (click+drag).<br/>
+      Zoom with scroll wheel or +/- buttons<br/>
+      Click a service area on the right to view details about that program.
+    </p>
+    <p class="hidden">?</p> 
+  </div>
+
+
+  <div id="title">
+    <h2>Bread for the City:</h2>
+    <h3>Fiscal Year 2013 Services Map</h3>
+    <p>Visit Numbers by DC Neighborhood</p>
+    <a class="link" href="http://breadforthecity.org" target="_blank">About Bread</a>
+    <hr/>
+    <a class="view_details">Details <span class="triangle closed">&#x25B8;</span><span class="triangle open">&#x25BE;</span></a>
+    <div id="details">
+      <div class="list">
+        <ul class="details">
+          <li id="overview" class="details viewing">OVERVIEW</li>
+          <li id="med_deets" class="details">MEDICAL</li>
+          <li id="soc_deets" class="details">SOCIAL</li>
+          <li id="leg_deets" class="details">LEGAL</li>
+          <li id="credit" class="details">CREDIT</li>
+        </ul>
+      </div>
+      <div class="details viewing overview">
+        <p>
+          <br/>
+          Our fiscal year (April 2012 - June 2013) just ended here at Bread for the City. Staff and funders are often interested in 
+          how many people we served, how often, and where they are coming from. This map breaks down our services from the past year
+          by DC neighborhoods.<br/><br/> 
+          We offer food and clothing to low-income DC residents, and within medical, social, and legal programs, we offer a number of services (click on a service area to see those breakdowns).<br/><br/>
+          Of course, this map does not capture everything. We sometimes serve people from outside DC and nearly 20% of our visits are from people who are
+          homeless or without stable housing. There are also countless support groups, training sessions, events, and everdyay 
+          interactions that make up our work at Bread for the City that we do not track. This is just one way of showing the work we do.<br/><br/>
+          </p>
+        
+      </div>
+      <div class="details med_deets">
+        <p>
+          <br/>
+          <span class="vistype">Medical</span> <br/>
+          Adult and Pediatric primary care. <br/>
+          <span class="vistype">Dental</span><br/>
+          Dental cleanings, fillings, root canals etc. <br/>
+          <span class="vistype">Lab</span><br/>
+          Visit with lab technician to draw blood or perform other tests and/or review lab results<br/> 
+          <span class="vistype">Enrollment</span><br/>
+          Consultation and help with insurance enrollment <br/>
+          <span class="vistype">Other</span><br/>
+          Visit with an optomologist, nutritionist, acupuncturist or to our needle exchange program.<br/>
+        </p>
+      </div>
+      <div class="details soc_deets">
+        <p>
+          <br/>
+          <span class="vistype">Walkin/Intake</span><br/>
+          Social workers assess needs and directs client to programs
+          or links them with care.<br/>
+          <span class="vistype">Case Management</span><br/>
+          Case workers provide ongoing help navigating social services system.<br/>
+          <span class="vistype">RepPayee</span><br/>
+          Case workers manage the budget of mentally disabled clients<br/>
+          <span class="vistype">PEP</span><br/>
+          Pre-Employment Program. Our job developers provide life skills coaching and employment counselling<br/>
+        </p>
+      </div>
+      <div class="details leg_deets">
+        <p>
+          <br/>
+          <span class="vistype">Family Law</span><br/>
+          Representing clients with family/domestic disputes and custody battles <br/>
+          <span class="vistype">Landlord/Tenant</span><br/>
+          Representing tenants with wrongful evictions, fines and other disputes with landlords<br/>
+          <span class="vistype">Public Benefits</span><br/>
+          Representing clients who have been wrongfully denied public benefits<br/> 
+          <span class="vistype">Disability</span><br/>
+          Representing clients who have been wrongfully denied disability benefits<br/> 
+        </p>
+      </div>
+      <div class="details credit">
+        <p><br/>
+          Neighborhood boundaries edited from <a class='link' target="_blank" href="http://apps.washingtonpost.com/investigative/homicides/"> Washington Post</a> <br/>
+          Map tiles from <a class='link' href="http://mapbox.com" target="_blank"> Mapbox </a><br/>
+          Pie Chart from <a class='link' href="http://d3js.org" target="_blank">D3js</a> 
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id='nav'>
+     <div id="numbers">
+      <p id="nbh">neighborhood</p>
+      <h3 id="nbhd_name">Washington, DC</h3>
+     </div>
+
+    <div id='program-list-wrapper'>
+      <ul id='programs-list'>
+        <li id='0' class='program selected'>all</li>
+        <li id='1' class='program'>medical</li>
+        <li id='2' class='program' >social services</li>
+        <li id='4' class='program'>legal</li>
+      </ul>
+      <div id='bread_data'>
+
+        <div id='services_breakdown'>
+          <svg id='breakdown'></svg>
+        </div>
+      </div> 
+    </div>
+  </div>
+
+  <div id="searching">
+    <form id="search" onsubmit="return false;">
+      <input type="text" id="address" name="address" placeholder="search for your neighborhood or address" >
+      <input type="submit" value="Search" onclick="search()">
+    </form>
+  </div>  
+
+  <div id="giveorshare">
+    <ul id="gos">
+      <li class="yourhooddata"></li>
+      <li class="share">
+        <a href="https://twitter.com/share" data-size="large" 
+        class="twitter-share-button" data-dnt="true" data-count="none">Tweet</a>
+      </li>
+      <li class="donate">
+        <a class='donate' onclick="_gaq.push(['_trackEvent', 'Outbound link', 'Visited', 'http://donate.breadforthecity.org.']);" target="_blank" href="https://donate.breadforthecity.org/">Donate</a>
+      </li>
+
+    </ul>
+     <script>
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+     </script>
+  </div>
+
+
+  <div id='map-container'>
+    <div id='map'></div>
+  </div>
+
+
+  <div class="loader-wrap">
+  <div class="loader">Loading...</div>
+
+</div>
+
+<script type="text/javascript" src="/assets/js/mapPie.js"></script>
+<script type="text/javascript" src="/assets/js/mapInterface.js"></script>
+</body>
+</html>
